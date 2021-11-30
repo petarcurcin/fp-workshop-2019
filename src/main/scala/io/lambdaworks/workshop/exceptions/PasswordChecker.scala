@@ -9,42 +9,36 @@ object PasswordChecker {
     val passwordCheck4 = containsNumber(password)
     val checkerList    = List(passwordCheck1, passwordCheck2, passwordCheck3, passwordCheck4)
     val errorList = checkerList
-      .filter(c =>
-        c match {
-          case Left(value)  => true
-          case Right(value) => false
-      })
-      .map(c => c.left.get)
+      .collect({ case Left(x) => x })
     if (errorList.nonEmpty) Left(errorList)
     else Right(password)
   }
 
-  private def minNumberOfChars(password: String, length: Int): Either[Throwable, String] = {
+  private def minNumberOfChars(password: String, length: Int): Either[Throwable, String] =
     if (password.length < length)
       Left(InvalidLength)
     else
       Right(password)
-  }
 
   private def containsUpperCase(password: String): Either[Throwable, String] = {
-    val upperCases = password.filter(c => c.isUpper)
-    if (upperCases.length > 0)
+    val hasUpperCase = password.exists(c => c.isUpper)
+    if (hasUpperCase)
       Right(password)
     else
       Left(MissingUppercase)
   }
 
   private def containsLowerCase(password: String): Either[Throwable, String] = {
-    val lowerCases = password.filter(c => c.isLower)
-    if (lowerCases.length > 0)
+    val hasLowerCase = password.exists(c => c.isLower)
+    if (hasLowerCase)
       Right(password)
     else
       Left(MissingLowercase)
   }
 
   private def containsNumber(password: String): Either[Throwable, String] = {
-    val digits = password.filter(c => c.isDigit)
-    if (digits.length > 0)
+    val hasDigit = password.exists(c => c.isDigit)
+    if (hasDigit)
       Right(password)
     else
       Left(MissingNumber)
