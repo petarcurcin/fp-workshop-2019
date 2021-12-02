@@ -10,9 +10,9 @@ object NonTail2TailRecursion {
 
   def factorial(n: Int): Int = {
     @tailrec
-    def factorialRec(n: Int, acc: Int = 1): Int = {
+    def factorialRec(n: Int, acc: Int = 1): Int =
       if (n <= 0) acc else factorialRec(n - 1, n * acc)
-    }
+
     factorialRec(n)
   }
 
