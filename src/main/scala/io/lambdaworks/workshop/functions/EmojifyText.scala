@@ -6,7 +6,11 @@ import scala.util.Try
 
 object EmojifyText {
 
-  def emojify(sentence: String): String = ???
+  def emojify(sentence: String): String = {
+    val words          = sentence.split(" ")
+    val wordsEmojified = words.map(w => emojiOrWord(w.filter(isLetter)))
+    wordsEmojified.reduce((w1, w2) => w1.concat(" ").concat(w2))
+  }
 
   private def emojiOrWord(word: String): String =
     Try(word.toLowerCase.emoji.toString).getOrElse(word)
